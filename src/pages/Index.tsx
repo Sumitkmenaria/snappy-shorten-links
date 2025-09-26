@@ -1,12 +1,144 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { URLShortener } from "@/components/URLShortener";
+import { Card } from "@/components/ui/card";
+import { Heart, Zap, Share2, BarChart3 } from "lucide-react";
+import heroImage from "@/assets/hero-image.jpg";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-gradient-hero">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden">
+        <div className="container mx-auto px-4 py-16 lg:py-24">
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            {/* Hero Content */}
+            <div className="space-y-6">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground">
+                Short Links That Are{" "}
+                <span className="bg-gradient-primary bg-clip-text text-transparent">
+                  Actually Cute
+                </span>
+              </h1>
+              
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                Instead of random gibberish, get memorable links like{" "}
+                <code className="px-2 py-1 bg-primary/10 text-primary rounded font-mono">
+                  sweetpotato
+                </code>{" "}
+                and{" "}
+                <code className="px-2 py-1 bg-primary/10 text-primary rounded font-mono">
+                  happypanda
+                </code>{" "}
+                that are easy to remember, say aloud, and share.
+              </p>
+            </div>
+
+            {/* Hero Image */}
+            <div className="flex justify-center mb-12">
+              <img
+                src={heroImage}
+                alt="Cute URL shortening illustration"
+                className="max-w-md w-full h-auto rounded-2xl shadow-soft"
+              />
+            </div>
+
+            {/* URL Shortener Component */}
+            <URLShortener />
+          </div>
+        </div>
       </div>
+
+      {/* Features Section */}
+      <div className="py-16 lg:py-24 bg-background/50 backdrop-blur-sm">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
+                Why Choose Cute Links?
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Make your links as memorable as your content
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Card className="p-6 text-center space-y-4 bg-gradient-card shadow-soft border-primary/10 hover:border-primary/30 transition-all duration-300">
+                <div className="w-12 h-12 mx-auto bg-primary/10 rounded-full flex items-center justify-center">
+                  <Heart className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="font-semibold text-lg">Easy to Remember</h3>
+                <p className="text-muted-foreground text-sm">
+                  "sweetpotato" sticks in your mind better than "x7k9mq2"
+                </p>
+              </Card>
+
+              <Card className="p-6 text-center space-y-4 bg-gradient-card shadow-soft border-primary/10 hover:border-primary/30 transition-all duration-300">
+                <div className="w-12 h-12 mx-auto bg-secondary/10 rounded-full flex items-center justify-center">
+                  <Share2 className="w-6 h-6 text-secondary" />
+                </div>
+                <h3 className="font-semibold text-lg">Easy to Say</h3>
+                <p className="text-muted-foreground text-sm">
+                  Perfect for podcasts, videos, and conversations
+                </p>
+              </Card>
+
+              <Card className="p-6 text-center space-y-4 bg-gradient-card shadow-soft border-primary/10 hover:border-primary/30 transition-all duration-300">
+                <div className="w-12 h-12 mx-auto bg-accent/10 rounded-full flex items-center justify-center">
+                  <Zap className="w-6 h-6 text-accent-foreground" />
+                </div>
+                <h3 className="font-semibold text-lg">Instant Trust</h3>
+                <p className="text-muted-foreground text-sm">
+                  Friendly words feel safer than mysterious codes
+                </p>
+              </Card>
+
+              <Card className="p-6 text-center space-y-4 bg-gradient-card shadow-soft border-primary/10 hover:border-primary/30 transition-all duration-300">
+                <div className="w-12 h-12 mx-auto bg-primary/10 rounded-full flex items-center justify-center">
+                  <BarChart3 className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="font-semibold text-lg">Track & Analyze</h3>
+                <p className="text-muted-foreground text-sm">
+                  See how your cute links perform (coming soon!)
+                </p>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="py-16 bg-gradient-primary text-center">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto space-y-6">
+            <h2 className="text-3xl lg:text-4xl font-bold text-white">
+              Ready for Cuter Links?
+            </h2>
+            <p className="text-xl text-white/90">
+              Join thousands of users who've made their links more memorable
+            </p>
+            <div className="pt-4">
+              <a
+                href="#top"
+                className="inline-flex items-center px-8 py-4 bg-white text-primary font-semibold rounded-lg hover:bg-white/90 transition-all duration-300 shadow-glow"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
+                Start Shortening Now
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="py-8 bg-background border-t border-border">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-muted-foreground">
+            Made with ❤️ for better links
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
