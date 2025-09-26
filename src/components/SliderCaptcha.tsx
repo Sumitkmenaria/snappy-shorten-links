@@ -50,7 +50,7 @@ export const SliderCaptcha = ({ onVerified, isReset }: SliderCaptchaProps) => {
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <Shield className="w-4 h-4 text-primary" />
-          <span className="text-sm font-medium">Human Verification</span>
+          <span className="text-sm font-medium">Potato Verification</span>
           {isVerified && <CheckCircle2 className="w-4 h-4 text-green-500" />}
         </div>
         
@@ -59,6 +59,9 @@ export const SliderCaptcha = ({ onVerified, isReset }: SliderCaptchaProps) => {
             <span className="text-lg font-semibold text-primary">
               Move the slider to: {targetNumber}
             </span>
+            <p className="text-xs text-muted-foreground mt-1">
+              Checking that you are not a potato 🥔
+            </p>
           </div>
           
           <div className="space-y-2">
@@ -83,7 +86,7 @@ export const SliderCaptcha = ({ onVerified, isReset }: SliderCaptchaProps) => {
           {hasInteracted && (
             <div className="text-center text-sm">
               {isVerified ? (
-                <span className="text-green-500 font-medium">✓ Verified! You're human</span>
+                <span className="text-green-500 font-medium">✓ Verified! You're not a potato</span>
               ) : (
                 <span className="text-muted-foreground">
                   Keep adjusting... (target: {targetNumber})

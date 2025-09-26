@@ -141,7 +141,7 @@ const Index = () => {
               Ready for Cuter Links?
             </h2>
             <p className="text-xl text-white/90">
-              Join thousands of users who've made their links more memorable
+              that are easy to remember, say aloud, and share. Each link gets a cuteness rating too!
             </p>
             <div className="pt-4">
               <a

@@ -175,7 +175,7 @@ const Dashboard = () => {
                   {links.map((link) => (
                     <TableRow key={link.id}>
                       <TableCell className="font-mono">
-                        short.ly/{link.slug}
+                        {window.location.hostname}/{link.slug}
                       </TableCell>
                       <TableCell className="max-w-xs truncate">
                         {link.original_url}
@@ -189,7 +189,7 @@ const Dashboard = () => {
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => copyToClipboard(`short.ly/${link.slug}`)}
+                            onClick={() => copyToClipboard(`${window.location.hostname}/${link.slug}`)}
                           >
                             <Copy className="w-4 h-4" />
                           </Button>

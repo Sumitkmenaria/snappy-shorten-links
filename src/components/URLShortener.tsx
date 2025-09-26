@@ -11,18 +11,40 @@ import { SliderCaptcha } from "./SliderCaptcha";
 // Mock word lists for demo purposes
 const adjectives = [
   "sweet", "happy", "sunny", "cozy", "gentle", "bright", "calm", "fresh", 
-  "warm", "soft", "cool", "smart", "kind", "quick", "brave", "funny"
+  "warm", "soft", "cool", "smart", "kind", "quick", "brave", "funny",
+  "fluffy", "bouncy", "sparkly", "dreamy", "magical", "lovely", "cheerful", "adorable"
 ];
 
 const nouns = [
   "potato", "panda", "cloud", "moon", "star", "tree", "bird", "cat",
-  "flower", "river", "mountain", "book", "coffee", "cookie", "dream", "song"
+  "flower", "river", "mountain", "book", "coffee", "cookie", "dream", "song",
+  "butterfly", "rainbow", "unicorn", "cupcake", "kitten", "puppy", "bunny", "dolphin"
 ];
+
+// Function to calculate cuteness rating
+const calculateCuteness = (adjective: string, noun: string) => {
+  const cuteWords = [
+    'sweet', 'fluffy', 'bouncy', 'sparkly', 'dreamy', 'magical', 'lovely', 'cheerful', 'adorable',
+    'panda', 'kitten', 'puppy', 'bunny', 'butterfly', 'rainbow', 'unicorn', 'cupcake', 'dolphin'
+  ];
+  
+  let cuteness = 75; // Base cuteness
+  
+  if (cuteWords.includes(adjective)) cuteness += 8;
+  if (cuteWords.includes(noun)) cuteness += 12;
+  
+  // Add some randomness but keep it between 75-100
+  cuteness += Math.floor(Math.random() * 5);
+  
+  return Math.min(100, cuteness);
+};
 
 const generateSlug = () => {
   const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
   const noun = nouns[Math.floor(Math.random() * nouns.length)];
-  return `${adjective}${noun}`;
+  const slug = `${adjective}${noun}`;
+  const cuteness = calculateCuteness(adjective, noun);
+  return { slug, cuteness };
 };
 
 interface URLShortenerProps {
@@ -77,7 +99,9 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
       const fullUrl = url.startsWith('http') ? url : `https://${url}`;
       
       // Generate a random slug
-      const slug = generateSlug();
+      const { slug, cuteness } = generateSlug();
+      const currentDomain = window.location.hostname;
+      const shortUrl = `${currentDomain}/${slug}`;
       
       if (user) {
         // Save to database for authenticated users
@@ -95,7 +119,7 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
 
         toast({
           title: "URL Shortened! ✨",
-          description: "Your URL has been saved to your dashboard.",
+          description: `Your URL has been saved to your dashboard. Cuteness rating: ${cuteness}%!`,
         });
 
         onLinkCreated?.();
@@ -103,12 +127,11 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
         // For non-authenticated users, just show the result
         toast({
           title: "URL Shortened! ✨",
-          description: "Sign up to save and manage your URLs.",
+          description: `Cuteness rating: ${cuteness}%! Sign up to save and manage your URLs.`,
         });
       }
       
-      const shortened = `short.ly/${slug}`;
-      setShortenedUrl(shortened);
+      setShortenedUrl(shortUrl);
       
       // Reset form
       setUrl("");
