@@ -163,7 +163,7 @@ const Index = () => {
       <footer className="py-8 bg-background border-t border-border">
         <div className="container mx-auto px-4 text-center">
           <p className="text-muted-foreground">
-            Made with ❤️ for better links
+            Created by Sumit Menaria with ❤️ for better links
           </p>
         </div>
       </footer>
