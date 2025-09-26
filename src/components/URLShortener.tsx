@@ -100,31 +100,30 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
       
       // Generate a random slug
       const { slug, cuteness } = generateSlug();
-      const currentDomain = window.location.hostname;
+      const currentDomain = window.location.host; // Use host instead of hostname to include port
       const shortUrl = `${currentDomain}/${slug}`;
       
+      // Always save to database, but set user_id only if user is authenticated
+      const { error } = await supabase
+        .from('links')
+        .insert({
+          slug,
+          original_url: fullUrl,
+          user_id: user?.id || null,
+        });
+
+      if (error) {
+        console.error('Database error:', error);
+        throw error;
+      }
+
       if (user) {
-        // Save to database for authenticated users
-        const { error } = await supabase
-          .from('links')
-          .insert({
-            slug,
-            original_url: fullUrl,
-            user_id: user.id,
-          });
-
-        if (error) {
-          throw error;
-        }
-
         toast({
           title: "URL Shortened! ✨",
           description: `Your URL has been saved to your dashboard. Cuteness rating: ${cuteness}%!`,
         });
-
         onLinkCreated?.();
       } else {
-        // For non-authenticated users, just show the result
         toast({
           title: "URL Shortened! ✨",
           description: `Cuteness rating: ${cuteness}%! Sign up to save and manage your URLs.`,

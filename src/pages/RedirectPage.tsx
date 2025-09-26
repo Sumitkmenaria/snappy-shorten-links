@@ -27,9 +27,16 @@ const RedirectPage = () => {
           .from('links')
           .select('original_url, click_count')
           .eq('slug', slug)
-          .single();
+          .maybeSingle();
 
-        if (error || !data) {
+        if (error) {
+          console.error('Database error:', error);
+          setError('Database error occurred');
+          setLoading(false);
+          return;
+        }
+
+        if (!data) {
           setError('Link not found');
           setLoading(false);
           return;
