@@ -1,9 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Copy, ExternalLink, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { SliderCaptcha } from "./SliderCaptcha";
 
 // Mock word lists for demo purposes
@@ -23,13 +25,18 @@ const generateSlug = () => {
   return `${adjective}${noun}`;
 };
 
-export const URLShortener = () => {
+interface URLShortenerProps {
+  onLinkCreated?: () => void;
+}
+
+export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
   const [url, setUrl] = useState("");
   const [shortenedUrl, setShortenedUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [resetCaptcha, setResetCaptcha] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const handleShorten = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,47 +59,71 @@ export const URLShortener = () => {
       return;
     }
 
-    // Basic URL validation
     try {
-      new URL(url);
-    } catch {
-      toast({
-        title: "Invalid URL",
-        description: "Please enter a valid URL (include https://)",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsLoading(true);
-    
-    // For now, simulate the database operation
-    // TODO: Replace with actual Supabase calls once client is available
-    setTimeout(async () => {
-      try {
-        const slug = generateSlug();
-        setShortenedUrl(`yourdomain.com/${slug}`);
-        setIsLoading(false);
-        
-        // Reset form
-        setUrl("");
-        setIsVerified(false);
-        setResetCaptcha(prev => !prev);
-        
+      setIsLoading(true);
+      
+      // Validate URL
+      const urlPattern = /^(https?:\/\/)?([\w.-]+\.[a-z]{2,})(\/.*)?$/i;
+      if (!urlPattern.test(url)) {
         toast({
-          title: "Link shortened! ✨",
-          description: "Your cute link is ready to share!",
-        });
-      } catch (error) {
-        console.error('Error shortening URL:', error);
-        setIsLoading(false);
-        toast({
-          title: "Something went wrong",
-          description: "Please try again in a moment",
+          title: "Invalid URL",
+          description: "Please enter a valid URL (e.g., example.com or https://example.com)",
           variant: "destructive",
         });
+        return;
       }
-    }, 1500);
+
+      // Ensure URL has protocol
+      const fullUrl = url.startsWith('http') ? url : `https://${url}`;
+      
+      // Generate a random slug
+      const slug = generateSlug();
+      
+      if (user) {
+        // Save to database for authenticated users
+        const { error } = await supabase
+          .from('links')
+          .insert({
+            slug,
+            original_url: fullUrl,
+            user_id: user.id,
+          });
+
+        if (error) {
+          throw error;
+        }
+
+        toast({
+          title: "URL Shortened! ✨",
+          description: "Your URL has been saved to your dashboard.",
+        });
+
+        onLinkCreated?.();
+      } else {
+        // For non-authenticated users, just show the result
+        toast({
+          title: "URL Shortened! ✨",
+          description: "Sign up to save and manage your URLs.",
+        });
+      }
+      
+      const shortened = `short.ly/${slug}`;
+      setShortenedUrl(shortened);
+      
+      // Reset form
+      setUrl("");
+      setIsVerified(false);
+      setResetCaptcha(prev => !prev);
+    } catch (error) {
+      console.error('Error shortening URL:', error);
+      toast({
+        title: "Something went wrong",
+        description: "Please try again in a moment",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const copyToClipboard = () => {

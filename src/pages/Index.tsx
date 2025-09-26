@@ -1,11 +1,30 @@
+import React from "react";
+import { Link } from "react-router-dom";
 import { URLShortener } from "@/components/URLShortener";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Heart, Zap, Share2, BarChart3 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import heroImage from "@/assets/hero-image.jpg";
 
 const Index = () => {
+  const { user } = useAuth();
+
   return (
     <div className="min-h-screen bg-gradient-hero">
+      {/* Navigation */}
+      <div className="absolute top-4 right-4 z-10">
+        {user ? (
+          <Link to="/dashboard">
+            <Button>Dashboard</Button>
+          </Link>
+        ) : (
+          <Link to="/auth">
+            <Button>Sign In</Button>
+          </Link>
+        )}
+      </div>
+
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="container mx-auto px-4 py-16 lg:py-24">
@@ -43,6 +62,15 @@ const Index = () => {
 
             {/* URL Shortener Component */}
             <URLShortener />
+            
+            {!user && (
+              <p className="mt-8 text-sm text-muted-foreground">
+                <Link to="/auth" className="text-primary hover:underline">
+                  Sign up
+                </Link>
+                {" "}to save and manage your shortened URLs
+              </p>
+            )}
           </div>
         </div>
       </div>
