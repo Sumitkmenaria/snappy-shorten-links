@@ -189,7 +189,7 @@ const Dashboard = () => {
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => copyToClipboard(`${window.location.hostname}/${link.slug}`)}
+                            onClick={() => copyToClipboard(`https://${window.location.host}/${link.slug}`)}
                           >
                             <Copy className="w-4 h-4" />
                           </Button>
