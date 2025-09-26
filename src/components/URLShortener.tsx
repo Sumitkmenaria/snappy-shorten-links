@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Copy, ExternalLink, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { SliderCaptcha } from "./SliderCaptcha";
 
 // Mock word lists for demo purposes
 const adjectives = [
@@ -26,6 +27,8 @@ export const URLShortener = () => {
   const [url, setUrl] = useState("");
   const [shortenedUrl, setShortenedUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+  const [resetCaptcha, setResetCaptcha] = useState(false);
   const { toast } = useToast();
 
   const handleShorten = async (e: React.FormEvent) => {
@@ -35,6 +38,15 @@ export const URLShortener = () => {
       toast({
         title: "Please enter a URL",
         description: "We need a URL to create your cute short link!",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!isVerified) {
+      toast({
+        title: "Please complete verification",
+        description: "Move the slider to verify you're human!",
         variant: "destructive",
       });
       return;
@@ -54,16 +66,32 @@ export const URLShortener = () => {
 
     setIsLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      const slug = generateSlug();
-      setShortenedUrl(`yourdomain.com/${slug}`);
-      setIsLoading(false);
-      
-      toast({
-        title: "Link shortened! ✨",
-        description: "Your cute link is ready to share!",
-      });
+    // For now, simulate the database operation
+    // TODO: Replace with actual Supabase calls once client is available
+    setTimeout(async () => {
+      try {
+        const slug = generateSlug();
+        setShortenedUrl(`yourdomain.com/${slug}`);
+        setIsLoading(false);
+        
+        // Reset form
+        setUrl("");
+        setIsVerified(false);
+        setResetCaptcha(prev => !prev);
+        
+        toast({
+          title: "Link shortened! ✨",
+          description: "Your cute link is ready to share!",
+        });
+      } catch (error) {
+        console.error('Error shortening URL:', error);
+        setIsLoading(false);
+        toast({
+          title: "Something went wrong",
+          description: "Please try again in a moment",
+          variant: "destructive",
+        });
+      }
     }, 1500);
   };
 
@@ -84,12 +112,12 @@ export const URLShortener = () => {
             placeholder="https://your-super-long-url.com/with/lots/of/parameters"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="flex-1 h-14 px-6 text-lg bg-background/80 backdrop-blur-sm border-2 border-border hover:border-primary/50 focus:border-primary transition-all duration-300"
+            className="flex-1 h-14 px-4 sm:px-6 text-base sm:text-lg bg-background/80 backdrop-blur-sm border-2 border-border hover:border-primary/50 focus:border-primary transition-all duration-300 min-w-0"
           />
           <Button
             type="submit"
-            disabled={isLoading}
-            className="h-14 px-8 bg-gradient-primary hover:shadow-glow transition-all duration-300 text-lg font-semibold"
+            disabled={isLoading || !isVerified}
+            className="h-14 px-6 sm:px-8 bg-gradient-primary hover:shadow-glow transition-all duration-300 text-base sm:text-lg font-semibold disabled:opacity-50"
           >
             {isLoading ? (
               <div className="flex items-center gap-2">
@@ -104,6 +132,12 @@ export const URLShortener = () => {
             )}
           </Button>
         </div>
+        
+        {/* Human Verification */}
+        <SliderCaptcha 
+          onVerified={setIsVerified} 
+          isReset={resetCaptcha}
+        />
       </form>
 
       {shortenedUrl && (
