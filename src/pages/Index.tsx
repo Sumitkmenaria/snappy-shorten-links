@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { URLShortener } from "@/components/URLShortener";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Heart, Zap, Share2, BarChart3 } from "lucide-react";
+import { Heart, Zap, Share2, ChartBar as BarChart3 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import heroImage from "@/assets/hero-image.jpg";
 

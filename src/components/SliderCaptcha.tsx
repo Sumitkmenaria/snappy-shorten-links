@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Card } from "@/components/ui/card";
-import { CheckCircle2, Shield } from "lucide-react";
+import { CircleCheck as CheckCircle2, Shield } from "lucide-react";
 
 interface SliderCaptchaProps {
   onVerified: (verified: boolean) => void;
