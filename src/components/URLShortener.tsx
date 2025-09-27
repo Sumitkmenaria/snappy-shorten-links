@@ -38,6 +38,7 @@ interface URLShortenerProps {
 export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
   const [url, setUrl] = useState("");
   const [shortenedUrl, setShortenedUrl] = useState("");
+  const [slug, setSlug] = useState("");
   const [originalUrl, setOriginalUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -82,14 +83,15 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
       const fullUrl = url.startsWith('http') ? url : `https://${url}`;
       setOriginalUrl(url);
       
-      const { slug } = generateSlug();
+      const { slug: newSlug } = generateSlug();
+      setSlug(newSlug);
       const currentDomain = window.location.host; 
-      const shortUrl = `${currentDomain}/${slug}`;
+      const shortUrl = `${currentDomain}/${newSlug}`;
       
       const { error } = await supabase
         .from('links')
         .insert({
-          slug,
+          slug: newSlug,
           original_url: fullUrl,
           user_id: user?.id || null,
         });
@@ -198,6 +200,11 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Sparkles className="w-4 h-4 text-primary" />
                 Your cute short link is ready!
+                </div>
+                
+                <div className="text-center mb-4">
+                  <p className="text-lg text-muted-foreground">Your cute link slug is:</p>
+                  <p className="text-5xl font-bold text-primary break-all p-4 bg-primary/10 rounded-lg">{slug}</p>
                 </div>
                 
                 <div className="flex items-center gap-3 p-4 bg-background/50 rounded-lg border">

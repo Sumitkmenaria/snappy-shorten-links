@@ -67,8 +67,8 @@ const Index = () => {
               <p className="mt-8 text-sm text-muted-foreground">
                 <Link to="/auth" className="text-primary hover:underline">
                   Sign up
-                </Link>
-                {" "}to save and manage your shortened URLs
+                </Link>{" "}
+                to save and manage your shortened URLs
               </p>
             )}
           </div>
@@ -164,6 +164,9 @@ const Index = () => {
         <div className="container mx-auto px-4 text-center">
           <p className="text-muted-foreground">
             Created by Sumit Menaria with ❤️ for better links
+          </p>
+          <p className="text-muted-foreground text-sm">
+            v1.1.3
           </p>
         </div>
       </footer>
