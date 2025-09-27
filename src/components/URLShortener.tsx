@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Copy, ExternalLink, Sparkles } from "lucide-react";
+import { Copy, ExternalLink, Sparkles, Share2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -137,6 +137,24 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
     });
   };
 
+  const shareLink = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: "My Cute Link",
+        text: "Check out this cute link I created!",
+        url: `https://${shortenedUrl}`,
+      })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error));
+    } else {
+      toast({
+        title: "Share not supported",
+        description: "Your browser does not support the Web Share API.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="w-full max-w-2xl mx-auto space-y-8">
       <form onSubmit={handleShorten} className="space-y-4">
@@ -208,6 +226,14 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
                     className="hover:bg-primary/10"
                     >
                     <ExternalLink className="w-4 h-4" />
+                    </Button>
+                    <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={shareLink}
+                    className="hover:bg-primary/10"
+                    >
+                    <Share2 className="w-4 h-4" />
                     </Button>
                 </div>
                 </div>

@@ -17,7 +17,8 @@ const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, user } = useAuth();
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const { signIn, signUp, user, sendPasswordResetEmail } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -83,6 +84,40 @@ const Auth = () => {
       setLoading(false);
     }
   };
+  
+  const handlePasswordReset = async () => {
+    try {
+      const validatedData = z.object({ email: z.string().email() }).parse({ email });
+      setLoading(true);
+
+      const { error } = await sendPasswordResetEmail(validatedData.email);
+
+      if (error) {
+        toast({
+          title: 'Error',
+          description: error.message,
+          variant: 'destructive',
+        });
+      } else {
+        toast({
+          title: 'Password reset email sent',
+          description: 'Check your email for a link to reset your password.',
+        });
+        setIsForgotPassword(false);
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        toast({
+          title: 'Validation error',
+          description: error.errors[0].message,
+          variant: 'destructive',
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -101,27 +136,63 @@ const Auth = () => {
             </TabsList>
             
             <TabsContent value="signin" className="space-y-4">
-              <div className="space-y-2">
-                <Input
-                  type="email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <Button
-                onClick={() => handleAuth(false)}
-                disabled={loading}
-                className="w-full"
-              >
-                {loading ? 'Signing in...' : 'Sign In'}
-              </Button>
+              {isForgotPassword ? (
+                <>
+                  <div className="space-y-2">
+                    <Input
+                      type="email"
+                      placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                  <Button
+                    onClick={handlePasswordReset}
+                    disabled={loading}
+                    className="w-full"
+                  >
+                    {loading ? 'Sending...' : 'Send Reset Link'}
+                  </Button>
+                  <Button
+                    variant="link"
+                    onClick={() => setIsForgotPassword(false)}
+                    className="w-full"
+                  >
+                    Back to Sign In
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <div className="space-y-2">
+                    <Input
+                      type="email"
+                      placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Input
+                      type="password"
+                      placeholder="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
+                  <Button
+                    onClick={() => handleAuth(false)}
+                    disabled={loading}
+                    className="w-full"
+                  >
+                    {loading ? 'Signing in...' : 'Sign In'}
+                  </Button>
+                  <Button
+                    variant="link"
+                    onClick={() => setIsForgotPassword(true)}
+                    className="w-full"
+                  >
+                    Forgot Password?
+                  </Button>
+                </>
+              )}
             </TabsContent>
             
             <TabsContent value="signup" className="space-y-4">
