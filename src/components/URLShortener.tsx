@@ -93,11 +93,20 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
         .insert({
           slug: newSlug,
           original_url: fullUrl,
-          user_id: user?.id || null, // This allows both authenticated and anonymous users to create links
+          user_id: user?.id || null,
         });
 
       if (error) {
         console.error('Database error:', error);
+        if (error.code === 'PGRST301') {
+          toast({
+            title: "Slug already exists",
+            description: "This cute combination already exists. Trying again...",
+            variant: "destructive",
+          });
+          // Could implement retry logic here
+          return;
+        }
         throw error;
       }
 

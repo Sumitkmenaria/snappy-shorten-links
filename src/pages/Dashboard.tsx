@@ -41,6 +41,7 @@ const Dashboard = () => {
 
   const fetchLinks = async () => {
     try {
+      console.log('Fetching links for user:', user?.id);
       const { data, error } = await supabase
         .from('links')
         .select('*')
@@ -48,6 +49,7 @@ const Dashboard = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
+      console.log('Fetched links:', data);
       setLinks(data || []);
     } catch (error) {
       console.error('Error fetching links:', error);
