@@ -93,7 +93,7 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
         .insert({
           slug: newSlug,
           original_url: fullUrl,
-          user_id: user?.id || null,
+          user_id: user?.id || null, // This allows both authenticated and anonymous users to create links
         });
 
       if (error) {
