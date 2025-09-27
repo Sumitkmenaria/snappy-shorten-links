@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Clock, Zap, AlertTriangle } from 'lucide-react';
+import { ExternalLink, Clock, Zap, TriangleAlert as AlertTriangle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 const RedirectPage = () => {
