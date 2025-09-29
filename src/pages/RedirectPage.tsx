@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Clock, Zap, TriangleAlert as AlertTriangle } from 'lucide-react';
+import { ExternalLink, TriangleAlert as AlertTriangle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 const RedirectPage = () => {
@@ -12,6 +12,7 @@ const RedirectPage = () => {
   const [originalUrl, setOriginalUrl] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const fetchLink = async () => {
@@ -54,10 +55,10 @@ const RedirectPage = () => {
 
         setLoading(false);
 
-        const timer = setInterval(() => {
+        timerRef.current = setInterval(() => {
           setCountdown((prev) => {
             if (prev <= 1) {
-              clearInterval(timer);
+              if (timerRef.current) clearInterval(timerRef.current);
               window.location.href = data.original_url;
               return 0;
             }
@@ -65,7 +66,6 @@ const RedirectPage = () => {
           });
         }, 1000);
 
-        return () => clearInterval(timer);
       } catch (err) {
         console.error('Error fetching link:', err);
         setError('Something went wrong');
@@ -74,12 +74,28 @@ const RedirectPage = () => {
     };
 
     fetchLink();
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
   }, [slug]);
 
   const handleGoToUrl = () => {
     if (originalUrl) {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
       window.location.href = originalUrl;
     }
+  };
+
+  const handleGoHome = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    navigate('/');
   };
 
   if (loading) {
@@ -152,9 +168,14 @@ const RedirectPage = () => {
                 <p>This is an external website. Only proceed if you trust the sender.</p>
             </div>
 
-            <Button onClick={handleGoToUrl} className="w-full flex items-center gap-2">
-              Go to URL now
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button onClick={handleGoToUrl} className="w-full flex items-center gap-2">
+                Go to URL now
+              </Button>
+              <Button onClick={handleGoHome} variant="outline" className="w-full">
+                Shorten your own URL
+              </Button>
+            </div>
 
           </CardContent>
         </Card>
