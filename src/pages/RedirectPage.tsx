@@ -131,12 +131,7 @@ const RedirectPage = () => {
   return (
     <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4">
       <div className="w-full max-w-2xl space-y-6">
-        {/* Ad Placeholder */}
-        <div className="h-32 bg-gray-200 rounded-lg flex items-center justify-center">
-            <p className="text-gray-500">Advertisement</p>
-        </div>
-
-        {/* Main redirect card */}
+        
         <Card className="bg-gradient-card shadow-soft border-primary/20">
           <CardContent className="p-8 text-center space-y-6">
             <div className="space-y-2">
@@ -180,10 +175,7 @@ const RedirectPage = () => {
           </CardContent>
         </Card>
 
-        {/* Ad Placeholder */}
-        <div className="h-32 bg-gray-200 rounded-lg flex items-center justify-center">
-            <p className="text-gray-500">Advertisement</p>
-        </div>
+        
       </div>
     </div>
   );
