@@ -166,7 +166,7 @@ const Index = () => {
             Created by Sumit Menaria with ❤️ for better links
           </p>
           <p className="text-muted-foreground text-sm">
-            v1.1.5
+            v1.1.6
           </p>
         </div>
       </footer>
