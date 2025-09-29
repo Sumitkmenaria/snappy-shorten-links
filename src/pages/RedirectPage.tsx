@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Clock, Zap, AlertTriangle } from 'lucide-react';
+import { ExternalLink, Clock, Zap, TriangleAlert as AlertTriangle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 const RedirectPage = () => {
@@ -22,6 +22,7 @@ const RedirectPage = () => {
       }
 
       try {
+        console.log('Looking for slug:', slug);
         const { data, error } = await supabase
           .from('links')
           .select('original_url, click_count')
@@ -36,13 +37,16 @@ const RedirectPage = () => {
         }
 
         if (!data) {
+          console.log('No link found for slug:', slug);
           setError('Link not found');
           setLoading(false);
           return;
         }
 
+        console.log('Found link:', data);
         setOriginalUrl(data.original_url);
 
+        // Update click count
         await supabase
           .from('links')
           .update({ click_count: data.click_count + 1 })
