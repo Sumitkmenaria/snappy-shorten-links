@@ -5,7 +5,14 @@ import { NoteShortener } from "@/components/NoteShortener";
 import { GoToCuteLink } from "@/components/GoToCuteLink";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Heart, Zap, Share2, ChartBar as BarChart3, Link as LinkIcon, StickyNote } from "lucide-react";
+import {
+  Heart,
+  Zap,
+  Share2,
+  BarChart3,
+  Link as LinkIcon,
+  StickyNote,
+} from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
 import heroImage from "@/assets/hero-image.jpg";
@@ -34,15 +41,16 @@ const Index = () => {
           <div className="max-w-4xl mx-auto text-center space-y-8">
             {/* Hero Content */}
             <div className="space-y-6">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground break-words">
                 Short Links & Notes That Are{" "}
                 <span className="bg-gradient-primary bg-clip-text text-transparent">
                   Actually Cute
                 </span>
               </h1>
-              
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Create memorable short links and shareable notes with cute names like{" "}
+
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed break-words">
+                Create memorable short links and shareable notes with cute names
+                like{" "}
                 <code className="px-2 py-1 bg-primary/10 text-primary rounded font-mono">
                   sweetpotato
                 </code>{" "}
@@ -75,16 +83,16 @@ const Index = () => {
                   Share Notes
                 </TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="links">
                 <URLShortener />
               </TabsContent>
-              
+
               <TabsContent value="notes">
                 <NoteShortener />
               </TabsContent>
             </Tabs>
-            
+
             {!user && (
               <p className="mt-8 text-sm text-muted-foreground">
                 <Link to="/auth" className="text-primary hover:underline">
@@ -104,10 +112,10 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4 break-words">
                 Why Choose Cute Links & Notes?
               </h2>
-              <p className="text-xl text-muted-foreground">
+              <p className="text-xl text-muted-foreground break-words">
                 Make your links and notes as memorable as your content
               </p>
             </div>
@@ -117,9 +125,12 @@ const Index = () => {
                 <div className="w-12 h-12 mx-auto bg-primary/10 rounded-full flex items-center justify-center">
                   <Heart className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="font-semibold text-lg">Easy to Remember</h3>
-                <p className="text-muted-foreground text-sm">
-                  "sweetpotato" sticks better than "x7k9mq2" for links and notes
+                <h3 className="font-semibold text-lg break-words">
+                  Easy to Remember
+                </h3>
+                <p className="text-muted-foreground text-sm break-words">
+                  "sweetpotato" sticks better than "x7k9mq2" for links and
+                  notes
                 </p>
               </Card>
 
@@ -127,9 +138,10 @@ const Index = () => {
                 <div className="w-12 h-12 mx-auto bg-secondary/10 rounded-full flex items-center justify-center">
                   <Share2 className="w-6 h-6 text-secondary" />
                 </div>
-                <h3 className="font-semibold text-lg">Easy to Say</h3>
-                <p className="text-muted-foreground text-sm">
-                  Perfect for sharing links and notes in podcasts, videos, and conversations
+                <h3 className="font-semibold text-lg break-words">Easy to Say</h3>
+                <p className="text-muted-foreground text-sm break-words">
+                  Perfect for sharing links and notes in podcasts, videos, and
+                  conversations
                 </p>
               </Card>
 
@@ -137,9 +149,12 @@ const Index = () => {
                 <div className="w-12 h-12 mx-auto bg-accent/10 rounded-full flex items-center justify-center">
                   <Zap className="w-6 h-6 text-accent-foreground" />
                 </div>
-                <h3 className="font-semibold text-lg">Instant Trust</h3>
-                <p className="text-muted-foreground text-sm">
-                  Friendly words feel safer than mysterious codes for any content
+                <h3 className="font-semibold text-lg break-words">
+                  Instant Trust
+                </h3>
+                <p className="text-muted-foreground text-sm break-words">
+                  Friendly words feel safer than mysterious codes for any
+                  content
                 </p>
               </Card>
 
@@ -147,8 +162,10 @@ const Index = () => {
                 <div className="w-12 h-12 mx-auto bg-primary/10 rounded-full flex items-center justify-center">
                   <BarChart3 className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="font-semibold text-lg">Track & Analyze</h3>
-                <p className="text-muted-foreground text-sm">
+                <h3 className="font-semibold text-lg break-words">
+                  Track & Analyze
+                </h3>
+                <p className="text-muted-foreground text-sm break-words">
                   See how your cute links and notes perform
                 </p>
               </Card>
@@ -161,11 +178,12 @@ const Index = () => {
       <div className="py-16 bg-gradient-primary text-center">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto space-y-6">
-            <h2 className="text-3xl lg:text-4xl font-bold text-white">
+            <h2 className="text-3xl lg:text-4xl font-bold text-white break-words">
               Ready for Cuter Links & Notes?
             </h2>
-            <p className="text-xl text-white/90">
-              Create short links and shareable notes that are easy to remember, say aloud, and share. Each gets a cuteness rating too!
+            <p className="text-xl text-white/90 break-words">
+              Create short links and shareable notes that are easy to remember,
+              say aloud, and share. Each gets a cuteness rating too!
             </p>
             <div className="pt-4">
               <a
@@ -173,7 +191,7 @@ const Index = () => {
                 className="inline-flex items-center px-8 py-4 bg-white text-primary font-semibold rounded-lg hover:bg-white/90 transition-all duration-300 shadow-glow"
                 onClick={(e) => {
                   e.preventDefault();
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
               >
                 Start Shortening Now
@@ -186,12 +204,10 @@ const Index = () => {
       {/* Footer */}
       <footer className="py-8 bg-background border-t border-border">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground break-words">
             Created by Sumit Menaria with ❤️ for better links
           </p>
-          <p className="text-muted-foreground text-sm">
-            v1.1.6
-          </p>
+          <p className="text-muted-foreground text-sm">v1.1.7</p>
         </div>
       </footer>
     </div>

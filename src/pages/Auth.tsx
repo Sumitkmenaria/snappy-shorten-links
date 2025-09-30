@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Link as LinkIcon, Home } from 'lucide-react';
 
 const authSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -121,11 +122,22 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="absolute top-4 left-4">
+            <Button asChild variant="outline">
+                <Link to="/">
+                    <Home className="w-4 h-4 mr-2" />
+                    Back to Home
+                </Link>
+            </Button>
+        </div>
       <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-center">URL Shortener</CardTitle>
+        <CardHeader className="text-center">
+            <div className="flex justify-center items-center mb-4">
+                <LinkIcon className="w-8 h-8 text-primary" />
+            </div>
+          <CardTitle className="text-center">Cute Links</CardTitle>
           <CardDescription className="text-center">
-            Sign in to manage your shortened URLs
+            Sign in to manage your shortened URLs and notes
           </CardDescription>
         </CardHeader>
         <CardContent>

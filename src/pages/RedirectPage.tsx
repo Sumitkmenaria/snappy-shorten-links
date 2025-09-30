@@ -23,7 +23,6 @@ const RedirectPage = () => {
       }
 
       try {
-        console.log('Looking for slug:', slug);
         const { data, error } = await supabase
           .from('links')
           .select('original_url, click_count')
@@ -44,10 +43,8 @@ const RedirectPage = () => {
           return;
         }
 
-        console.log('Found link:', data);
         setOriginalUrl(data.original_url);
 
-        // Update click count
         await supabase
           .from('links')
           .update({ click_count: data.click_count + 1 })
@@ -104,7 +101,7 @@ const RedirectPage = () => {
         <Card className="w-full max-w-md">
           <CardContent className="p-8 text-center">
             <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading your destination...</p>
+            <p className="text-muted-foreground break-words">Loading your destination...</p>
           </CardContent>
         </Card>
       </div>
@@ -117,8 +114,8 @@ const RedirectPage = () => {
         <Card className="w-full max-w-md">
           <CardContent className="p-8 text-center space-y-4">
             <div className="text-6xl">😿</div>
-            <h1 className="text-2xl font-bold text-foreground">Oops!</h1>
-            <p className="text-muted-foreground">{error}</p>
+            <h1 className="text-2xl font-bold text-foreground break-words">Oops!</h1>
+            <p className="text-muted-foreground break-words">{error}</p>
             <Button onClick={() => navigate('/')} className="w-full">
               Go Home
             </Button>
@@ -133,18 +130,18 @@ const RedirectPage = () => {
       <div className="w-full max-w-2xl space-y-6">
         
         <Card className="bg-gradient-card shadow-soft border-primary/20">
-          <CardContent className="p-8 text-center space-y-6">
+          <CardContent className="p-6 sm:p-8 text-center space-y-6">
             <div className="space-y-2">
               <div className="text-6xl mb-4">🚀</div>
-              <h1 className="text-3xl font-bold text-foreground">
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground break-words">
                 You're being redirected
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground break-words">
                 Redirecting in <span className="font-bold text-primary">{countdown}</span> seconds...
               </p>
             </div>
 
-            <div className="bg-background/50 rounded-lg p-4 border">
+            <div className="bg-background/50 rounded-lg p-4 border text-left">
               <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                 <ExternalLink className="w-4 h-4" />
                 Destination:
@@ -154,13 +151,12 @@ const RedirectPage = () => {
               </div>
             </div>
 
-            {/* Warning Message */}
-            <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+            <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 text-left" role="alert">
                 <p className="font-bold flex items-center">
                     <AlertTriangle className="mr-2"/>
                     Warning
                 </p>
-                <p>This is an external website. Only proceed if you trust the sender.</p>
+                <p className="break-words">This is an external website. Only proceed if you trust the sender.</p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -174,8 +170,6 @@ const RedirectPage = () => {
 
           </CardContent>
         </Card>
-
-        
       </div>
     </div>
   );
