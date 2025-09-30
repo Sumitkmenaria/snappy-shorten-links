@@ -181,17 +181,15 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background p-4">
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold">My Dashboard</h1>
-            <p className="text-muted-foreground">Manage your shortened URLs and notes</p>
+            <h1 className="text-2xl sm:text-3xl font-bold">My Dashboard</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">Manage your shortened URLs and notes</p>
           </div>
-          <div className="flex gap-2">
-            <Button onClick={handleSignOut} variant="outline">
-              <LogOut className="w-4 h-4 mr-2" />
-              Sign Out
-            </Button>
-          </div>
+          <Button onClick={handleSignOut} variant="outline" className="w-full sm:w-auto">
+            <LogOut className="w-4 h-4 mr-2" />
+            Sign Out
+          </Button>
         </div>
 
         <Tabs defaultValue="links" className="space-y-6">
@@ -207,12 +205,12 @@ const Dashboard = () => {
           </TabsList>
 
           <TabsContent value="links" className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <h2 className="text-2xl font-bold">Your Links</h2>
-                <p className="text-muted-foreground">{links.length} shortened URL{links.length !== 1 ? 's' : ''}</p>
+                <h2 className="text-xl sm:text-2xl font-bold">Your Links</h2>
+                <p className="text-sm text-muted-foreground">{links.length} shortened URL{links.length !== 1 ? 's' : ''}</p>
               </div>
-              <Button onClick={() => setShowShortener(!showShortener)}>
+              <Button onClick={() => setShowShortener(!showShortener)} className="w-full sm:w-auto">
                 <Plus className="w-4 h-4 mr-2" />
                 {showShortener ? 'Hide' : 'Create New'}
               </Button>
@@ -230,81 +228,147 @@ const Dashboard = () => {
             )}
 
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-3 sm:p-6">
                 {links.length === 0 ? (
                   <div className="text-center py-8">
                     <LinkIcon className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                     <p className="text-muted-foreground mb-4">No links created yet</p>
-                    <Button onClick={() => setShowShortener(true)}>
+                    <Button onClick={() => setShowShortener(true)} className="w-full sm:w-auto">
                       <Plus className="w-4 h-4 mr-2" />
                       Create Your First Link
                     </Button>
                   </div>
                 ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Short URL</TableHead>
-                        <TableHead>Original URL</TableHead>
-                        <TableHead>Clicks</TableHead>
-                        <TableHead>Created</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
+                  <>
+                    {/* Desktop Table View */}
+                    <div className="hidden lg:block overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Short URL</TableHead>
+                            <TableHead>Original URL</TableHead>
+                            <TableHead>Clicks</TableHead>
+                            <TableHead>Created</TableHead>
+                            <TableHead>Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {links.map((link) => (
+                            <TableRow key={link.id}>
+                              <TableCell className="font-mono text-xs break-all">
+                                {window.location.host}/{link.slug}
+                              </TableCell>
+                              <TableCell className="max-w-xs truncate text-xs">
+                                {link.original_url}
+                              </TableCell>
+                              <TableCell>{link.click_count}</TableCell>
+                              <TableCell className="text-xs">
+                                {new Date(link.created_at).toLocaleDateString()}
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex gap-2">
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => copyToClipboard(`https://${window.location.host}/${link.slug}`)}
+                                  >
+                                    <Copy className="w-4 h-4" />
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => window.open(link.original_url, '_blank')}
+                                  >
+                                    <ExternalLink className="w-4 h-4" />
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="destructive"
+                                    onClick={() => deleteLink(link.id)}
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                    
+                    {/* Mobile Card View */}
+                    <div className="lg:hidden space-y-4">
                       {links.map((link) => (
-                        <TableRow key={link.id}>
-                          <TableCell className="font-mono">
-                            {window.location.host}/{link.slug}
-                          </TableCell>
-                          <TableCell className="max-w-xs truncate">
-                            {link.original_url}
-                          </TableCell>
-                          <TableCell>{link.click_count}</TableCell>
-                          <TableCell>
-                            {new Date(link.created_at).toLocaleDateString()}
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex gap-2">
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => copyToClipboard(`https://${window.location.host}/${link.slug}`)}
-                              >
-                                <Copy className="w-4 h-4" />
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => window.open(link.original_url, '_blank')}
-                              >
-                                <ExternalLink className="w-4 h-4" />
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="destructive"
-                                onClick={() => deleteLink(link.id)}
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
+                        <Card key={link.id} className="border">
+                          <CardContent className="p-4">
+                            <div className="space-y-3">
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-xs text-muted-foreground mb-1">Short URL</p>
+                                  <p className="font-mono text-sm text-primary break-all">
+                                    {window.location.host}/{link.slug}
+                                  </p>
+                                </div>
+                                <div className="text-right shrink-0">
+                                  <p className="text-xs text-muted-foreground">Clicks</p>
+                                  <p className="font-semibold">{link.click_count}</p>
+                                </div>
+                              </div>
+                              
+                              <div>
+                                <p className="text-xs text-muted-foreground mb-1">Original URL</p>
+                                <p className="text-sm break-all line-clamp-2">{link.original_url}</p>
+                              </div>
+                              
+                              <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
+                                <span>{new Date(link.created_at).toLocaleDateString()}</span>
+                              </div>
+                              
+                              <div className="flex gap-2 pt-2">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => copyToClipboard(`https://${window.location.host}/${link.slug}`)}
+                                  className="flex-1"
+                                >
+                                  <Copy className="w-4 h-4 mr-2" />
+                                  Copy
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => window.open(link.original_url, '_blank')}
+                                  className="flex-1"
+                                >
+                                  <ExternalLink className="w-4 h-4 mr-2" />
+                                  Open
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  onClick={() => deleteLink(link.id)}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
                             </div>
-                          </TableCell>
-                        </TableRow>
+                          </CardContent>
+                        </Card>
                       ))}
-                    </TableBody>
-                  </Table>
+                    </div>
+                  </>
                 )}
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="notes" className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <h2 className="text-2xl font-bold">Your Notes</h2>
-                <p className="text-muted-foreground">{notes.length} shared note{notes.length !== 1 ? 's' : ''}</p>
+                <h2 className="text-xl sm:text-2xl font-bold">Your Notes</h2>
+                <p className="text-sm text-muted-foreground">{notes.length} shared note{notes.length !== 1 ? 's' : ''}</p>
               </div>
-              <Button onClick={() => setShowNoteCreator(!showNoteCreator)}>
+              <Button onClick={() => setShowNoteCreator(!showNoteCreator)} className="w-full sm:w-auto">
                 <Plus className="w-4 h-4 mr-2" />
                 {showNoteCreator ? 'Hide' : 'Create New'}
               </Button>
@@ -322,12 +386,12 @@ const Dashboard = () => {
             )}
 
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-3 sm:p-6">
                 {notes.length === 0 ? (
                   <div className="text-center py-8">
                     <StickyNote className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                     <p className="text-muted-foreground mb-4">No notes created yet</p>
-                    <Button onClick={() => setShowNoteCreator(true)}>
+                    <Button onClick={() => setShowNoteCreator(true)} className="w-full sm:w-auto">
                       <Plus className="w-4 h-4 mr-2" />
                       Create Your First Note
                     </Button>
@@ -337,22 +401,22 @@ const Dashboard = () => {
                     {notes.map((note) => (
                       <Card key={note.id} className="border-l-4 border-l-primary">
                         <CardContent className="p-4">
-                          <div className="flex justify-between items-start gap-4">
+                          <div className="flex flex-col gap-4">
                             <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2 mb-2">
-                                <span className="font-mono text-sm bg-primary/10 text-primary px-2 py-1 rounded">
+                              <div className="mb-2">
+                                <span className="font-mono text-xs sm:text-sm bg-primary/10 text-primary px-2 py-1 rounded break-all inline-block">
                                   {window.location.host}/note/{note.slug}
                                 </span>
                               </div>
                               {note.title && (
-                                <h3 className="font-semibold text-lg mb-2 truncate">
+                                <h3 className="font-semibold text-base sm:text-lg mb-2 break-words">
                                   {note.title}
                                 </h3>
                               )}
-                              <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
+                              <p className="text-muted-foreground text-sm line-clamp-2 mb-3 break-words">
                                 {note.content}
                               </p>
-                              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                              <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-muted-foreground">
                                 <div className="flex items-center gap-1">
                                   <Calendar className="w-3 h-3" />
                                   {new Date(note.created_at).toLocaleDateString()}
@@ -368,15 +432,19 @@ const Dashboard = () => {
                                 size="sm"
                                 variant="outline"
                                 onClick={() => copyToClipboard(`https://${window.location.host}/note/${note.slug}`)}
+                                className="flex-1 sm:flex-initial"
                               >
-                                <Copy className="w-4 h-4" />
+                                <Copy className="w-4 h-4 sm:mr-0" />
+                                <span className="ml-2 sm:hidden">Copy</span>
                               </Button>
                               <Button
                                 size="sm"
                                 variant="outline"
                                 onClick={() => window.open(`/note/${note.slug}`, '_blank')}
+                                className="flex-1 sm:flex-initial"
                               >
-                                <ExternalLink className="w-4 h-4" />
+                                <ExternalLink className="w-4 h-4 sm:mr-0" />
+                                <span className="ml-2 sm:hidden">Open</span>
                               </Button>
                               <Button
                                 size="sm"

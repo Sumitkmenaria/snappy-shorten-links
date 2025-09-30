@@ -244,26 +244,26 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
                 </div>
                 
                 <div className="text-center mb-4">
-                  <p className="text-lg text-muted-foreground">Your cute link slug is:</p>
-                  <p className="text-5xl font-bold text-primary break-all p-4 bg-primary/10 rounded-lg">{slug}</p>
+                  <p className="text-sm sm:text-lg text-muted-foreground">Your cute link slug is:</p>
+                  <p className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary break-all p-3 sm:p-4 bg-primary/10 rounded-lg">{slug}</p>
                 </div>
                 
-                <div className="flex items-center gap-3 p-4 bg-background/50 rounded-lg border">
-                <div className="flex-1 min-w-0">
-                    <div className="text-2xl font-bold text-primary break-all">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-3 sm:p-4 bg-background/50 rounded-lg border">
+                <div className="flex-1 min-w-0 w-full">
+                    <div className="text-lg sm:text-xl lg:text-2xl font-bold text-primary break-all">
                     {shortenedUrl}
                     </div>
-                    <div className="text-sm text-muted-foreground break-all">
+                    <div className="text-xs sm:text-sm text-muted-foreground break-all">
                     Your original URL was: {originalUrl}
                     </div>
                 </div>
                 
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-full sm:w-auto">
                     <Button
                     variant="outline"
                     size="sm"
                     onClick={copyToClipboard}
-                    className="hover:bg-primary/10"
+                    className="hover:bg-primary/10 flex-1 sm:flex-initial"
                     >
                     <Copy className="w-4 h-4" />
                     </Button>
@@ -271,7 +271,7 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
                     variant="outline"
                     size="sm"
                     onClick={() => window.open(`https://${shortenedUrl}`, '_blank')}
-                    className="hover:bg-primary/10"
+                    className="hover:bg-primary/10 flex-1 sm:flex-initial"
                     >
                     <ExternalLink className="w-4 h-4" />
                     </Button>
@@ -279,7 +279,7 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
                     variant="outline"
                     size="sm"
                     onClick={shareLink}
-                    className="hover:bg-primary/10"
+                    className="hover:bg-primary/10 flex-1 sm:flex-initial"
                     >
                     <Share2 className="w-4 h-4" />
                     </Button>
