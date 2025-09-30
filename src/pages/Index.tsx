@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { URLShortener } from "@/components/URLShortener";
+import { NoteShortener } from "@/components/NoteShortener";
 import { GoToCuteLink } from "@/components/GoToCuteLink";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Heart, Zap, Share2, ChartBar as BarChart3 } from "lucide-react";
+import { Heart, Zap, Share2, ChartBar as BarChart3, Link as LinkIcon, StickyNote } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
 import heroImage from "@/assets/hero-image.jpg";
 
@@ -33,14 +35,14 @@ const Index = () => {
             {/* Hero Content */}
             <div className="space-y-6">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground">
-                Short Links That Are{" "}
+                Short Links & Notes That Are{" "}
                 <span className="bg-gradient-primary bg-clip-text text-transparent">
                   Actually Cute
                 </span>
               </h1>
               
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Instead of random gibberish, get memorable links like{" "}
+                Create memorable short links and shareable notes with cute names like{" "}
                 <code className="px-2 py-1 bg-primary/10 text-primary rounded font-mono">
                   sweetpotato
                 </code>{" "}
@@ -48,7 +50,7 @@ const Index = () => {
                 <code className="px-2 py-1 bg-primary/10 text-primary rounded font-mono">
                   happypanda
                 </code>{" "}
-                that are easy to remember, say aloud, and share.
+                that are easy to remember, say aloud, and share!
               </p>
             </div>
 
@@ -61,15 +63,34 @@ const Index = () => {
               />
             </div>
 
-            {/* URL Shortener Component */}
-            <URLShortener />
+            {/* URL Shortener & Note Creator */}
+            <Tabs defaultValue="links" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-8">
+                <TabsTrigger value="links" className="flex items-center gap-2">
+                  <LinkIcon className="w-4 h-4" />
+                  Shorten URLs
+                </TabsTrigger>
+                <TabsTrigger value="notes" className="flex items-center gap-2">
+                  <StickyNote className="w-4 h-4" />
+                  Share Notes
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="links">
+                <URLShortener />
+              </TabsContent>
+              
+              <TabsContent value="notes">
+                <NoteShortener />
+              </TabsContent>
+            </Tabs>
             
             {!user && (
               <p className="mt-8 text-sm text-muted-foreground">
                 <Link to="/auth" className="text-primary hover:underline">
                   Sign up
                 </Link>{" "}
-                to save and manage your shortened URLs
+                to save and manage your shortened URLs and notes
               </p>
             )}
           </div>
@@ -84,10 +105,10 @@ const Index = () => {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-                Why Choose Cute Links?
+                Why Choose Cute Links & Notes?
               </h2>
               <p className="text-xl text-muted-foreground">
-                Make your links as memorable as your content
+                Make your links and notes as memorable as your content
               </p>
             </div>
 
@@ -98,7 +119,7 @@ const Index = () => {
                 </div>
                 <h3 className="font-semibold text-lg">Easy to Remember</h3>
                 <p className="text-muted-foreground text-sm">
-                  "sweetpotato" sticks in your mind better than "x7k9mq2"
+                  "sweetpotato" sticks better than "x7k9mq2" for links and notes
                 </p>
               </Card>
 
@@ -108,7 +129,7 @@ const Index = () => {
                 </div>
                 <h3 className="font-semibold text-lg">Easy to Say</h3>
                 <p className="text-muted-foreground text-sm">
-                  Perfect for podcasts, videos, and conversations
+                  Perfect for sharing links and notes in podcasts, videos, and conversations
                 </p>
               </Card>
 
@@ -118,7 +139,7 @@ const Index = () => {
                 </div>
                 <h3 className="font-semibold text-lg">Instant Trust</h3>
                 <p className="text-muted-foreground text-sm">
-                  Friendly words feel safer than mysterious codes
+                  Friendly words feel safer than mysterious codes for any content
                 </p>
               </Card>
 
@@ -128,7 +149,7 @@ const Index = () => {
                 </div>
                 <h3 className="font-semibold text-lg">Track & Analyze</h3>
                 <p className="text-muted-foreground text-sm">
-                  See how your cute links perform (coming soon!)
+                  See how your cute links and notes perform
                 </p>
               </Card>
             </div>
@@ -141,10 +162,10 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto space-y-6">
             <h2 className="text-3xl lg:text-4xl font-bold text-white">
-              Ready for Cuter Links?
+              Ready for Cuter Links & Notes?
             </h2>
             <p className="text-xl text-white/90">
-              that are easy to remember, say aloud, and share. Each link gets a cuteness rating too!
+              Create short links and shareable notes that are easy to remember, say aloud, and share. Each gets a cuteness rating too!
             </p>
             <div className="pt-4">
               <a

@@ -44,6 +44,39 @@ export type Database = {
         }
         Relationships: []
       }
+      notes: {
+        Row: {
+          click_count: number
+          content: string
+          created_at: string
+          id: string
+          slug: string
+          title: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          click_count?: number
+          content: string
+          created_at?: string
+          id?: string
+          slug: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          click_count?: number
+          content?: string
+          created_at?: string
+          id?: string
+          slug?: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
