@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { URLShortener } from "@/components/URLShortener";
+import { GoToCuteLink } from "@/components/GoToCuteLink";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart, Zap, Share2, ChartBar as BarChart3 } from "lucide-react";
@@ -74,6 +75,8 @@ const Index = () => {
           </div>
         </div>
       </div>
+
+      <GoToCuteLink />
 
       {/* Features Section */}
       <div className="py-16 lg:py-24 bg-background/50 backdrop-blur-sm">

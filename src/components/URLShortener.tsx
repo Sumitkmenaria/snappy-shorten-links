@@ -57,11 +57,24 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
       });
       return;
     }
+    
+    if (url.includes('cutelinks.vercel.app')) {
+      toast({
+        title: "This is already a Cute Link!",
+        description: "You can't shorten a link that is already short.",
+        action: (
+          <a href={url} target="_blank" rel="noopener noreferrer">
+            <Button variant="outline">Go to Link</Button>
+          </a>
+        ),
+      });
+      return;
+    }
 
     if (!isVerified) {
       toast({
         title: "Please complete verification",
-        description: "Move the slider to verify you're human!",
+        description: "Move the slider to verify you\'re human!",
         variant: "destructive",
       });
       return;
@@ -82,6 +95,25 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
 
       const fullUrl = url.startsWith('http') ? url : `https://${url}`;
       setOriginalUrl(url);
+
+      // Check if the URL already exists
+      const { data: existingLink, error: selectError } = await supabase
+        .from('links')
+        .select('slug')
+        .eq('original_url', fullUrl)
+        .single();
+
+      if (existingLink) {
+        const currentDomain = window.location.host;
+        const shortUrl = `${currentDomain}/${existingLink.slug}`;
+        setSlug(existingLink.slug);
+        setShortenedUrl(shortUrl);
+        toast({
+          title: "Link already exists!",
+          description: "We found a cute link for that URL already.",
+        });
+        return;
+      }
       
       const { slug: newSlug } = generateSlug();
       setSlug(newSlug);
@@ -98,7 +130,7 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
 
       if (error) {
         console.error('Database error:', error);
-        if (error.code === 'PGRST301') {
+        if (error.code === '23505') { // Unique constraint violation for slug
           toast({
             title: "Slug already exists",
             description: "This cute combination already exists. Trying again...",
@@ -255,11 +287,6 @@ export const URLShortener = ({ onLinkCreated }: URLShortenerProps) => {
                 </div>
             </div>
             </Card>
-
-            {/* Ad Placeholder */}
-            <div className="h-32 bg-gray-200 rounded-lg flex items-center justify-center">
-                <p className="text-gray-500">Advertisement</p>
-            </div>
         </>
       )}
     </div>
