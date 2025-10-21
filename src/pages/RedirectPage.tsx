@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ExternalLink, AlertTriangle, Loader2, Home, ImageIcon } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Logo } from '@/components/Logo';
+import { AdestraAd } from '@/components/AdestraAd';
 
 const RedirectPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -156,6 +157,11 @@ const RedirectPage = () => {
             </div>
             </CardContent>
         </Card>
+
+        {/* Adestra Ad */}
+        <div className="w-full max-w-lg">
+          <AdestraAd />
+        </div>
     </div>
   );
 };

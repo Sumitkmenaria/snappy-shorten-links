@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { URLShortener } from "@/components/URLShortener";
 import { NoteShortener } from "@/components/NoteShortener";
 import { GoToCuteLink } from "@/components/GoToCuteLink";
+import { AdestraAd } from "@/components/AdestraAd";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -92,6 +93,11 @@ const Index = () => {
                 <NoteShortener />
               </TabsContent>
             </Tabs>
+
+            {/* Adestra Ad */}
+            <div className="my-8">
+              <AdestraAd />
+            </div>
 
             {!user && (
               <p className="mt-8 text-sm text-muted-foreground">
