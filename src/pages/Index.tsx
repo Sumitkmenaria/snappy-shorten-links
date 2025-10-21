@@ -207,7 +207,7 @@ const Index = () => {
           <p className="text-muted-foreground break-words">
             Created by Sumit Menaria with ❤️ for better links
           </p>
-          <p className="text-muted-foreground text-sm">v1.1.7</p>
+          <p className="text-muted-foreground text-sm">v1.1.8</p>
         </div>
       </footer>
     </div>
